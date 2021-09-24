@@ -52,8 +52,9 @@ const watchedCourses = function(courses) {
 
     for (let i in courses){
         for(let c in courses[i]){
-            if (courses[i][parseInt(c) + 1]) {
-                let combo = courses[i][c] + '<->' + courses[i][parseInt(c) + 1];
+            let c2 = courses[i][parseInt(c) + 1] || 'none';
+            if (c2) {
+                let combo = courses[i][c] + '<->' + c2;
                 let cur = cList[combo];
                 if(cur == undefined){
                     cur = 1;
@@ -69,7 +70,7 @@ const watchedCourses = function(courses) {
         Object.keys(cList).forEach(com => {
             if(com.startsWith(csplit[0])){
                 //assuming same number of watches mean pick the first occurrence
-                if(cList[com] > cList[betterMatch]){
+                if((cList[com] > cList[betterMatch] || betterMatch.endsWith('none')) && !com.endsWith('none') ){
                     betterMatch = com;
                 }
                 else if(com !== betterMatch) delete cList[com];

@@ -1210,15 +1210,16 @@ describe('Go1', function() {
         });
     });
     describe('watched courses', () => {
-        it('return stuff', () => {
+        it('session 1', () => {
             let a = [
                 ["Course_001","Course_002","Course_003","Course_004"]
             ]
             assert.deepEqual(watchedCourses(a),{
-                "Course_001" : "Course_002",
-                "Course_002" : "Course_003",
-                "Course_003" : "Course_004"
-            });
+                Course_001: 'Course_002',
+                Course_002: 'Course_003',
+                Course_003: 'Course_004',
+                Course_004: 'none'
+              });
         })
         it('session 2', () => {
             let a = [
@@ -1246,7 +1247,8 @@ describe('Go1', function() {
             assert.deepEqual(watchedCourses(a),{
                 Course_001: 'Course_002',
                 Course_002: 'Course_003',
-                Course_003: 'Course_004'
+                Course_003: 'Course_004',
+                Course_004: 'none'
               });
         });
         it('session 4', () => {
@@ -1256,7 +1258,9 @@ describe('Go1', function() {
             ];
             assert.deepEqual(watchedCourses(a),{
                 Course_001: 'Course_002',
-                Course_002: 'Course_001'
+                Course_002: 'Course_001',
+                Course_003: 'none',
+                Course_004: 'none'
               });
         });
     })
