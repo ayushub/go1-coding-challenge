@@ -1,4 +1,4 @@
-var learnerAndCourses = require('../index');
+var {learnerAndCourses} = require('../index');
 var assert = require('assert');
 
 describe('Go1', function() {

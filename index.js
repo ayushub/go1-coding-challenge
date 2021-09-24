@@ -26,5 +26,8 @@ const learnerAndCourses = function (dataset) {
     return singleLearnerCourseList;
 };
 
-module.exports = learnerAndCourses;
+module.exports = 
+{
+    learnerAndCourses: learnerAndCourses
+};
 
