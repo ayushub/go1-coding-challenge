@@ -1211,7 +1211,53 @@ describe('Go1', function() {
     });
     describe('watched courses', () => {
         it('return stuff', () => {
-            assert.equal(1,1);
+            let a = [
+                ["Course_001","Course_002","Course_003","Course_004"]
+            ]
+            assert.deepEqual(watchedCourses(a),{
+                "Course_001" : "Course_002",
+                "Course_002" : "Course_003",
+                "Course_003" : "Course_004"
+            });
         })
+        it('session 2', () => {
+            let a = [
+                ["Course_001","Course_002","Course_003","Course_004"],
+                ["Course_001","Course_003"],
+                ["Course_002","Course_004","Course_001"],
+                ["Course_004","Course_002","Course_003","Course_001"],
+                ["Course_004","Course_003","Course_002","Course_001"]
+            ]
+            assert.deepEqual(watchedCourses(a),{
+                Course_001: 'Course_002',
+                Course_002: 'Course_003',
+                Course_003: 'Course_004',
+                Course_004: 'Course_001'
+              });
+        });
+        it('session 3', () => {
+            let a = [
+                ["Course_001"],
+                ["Course_001","Course_002"],
+                ["Course_002","Course_003"],
+                ["Course_001","Course_002","Course_003","Course_004"],
+                ["Course_002","Course_003","Course_001","Course_004"]
+            ]
+            assert.deepEqual(watchedCourses(a),{
+                Course_001: 'Course_002',
+                Course_002: 'Course_003',
+                Course_003: 'Course_004'
+              });
+        });
+        it('session 4', () => {
+            let a = [
+                ["Course_001","Course_002","Course_001","Course_003"],
+                ["Course_002","Course_001","Course_001","Course_004"]
+            ];
+            assert.deepEqual(watchedCourses(a),{
+                Course_001: 'Course_002',
+                Course_002: 'Course_001'
+              });
+        });
     })
 });
