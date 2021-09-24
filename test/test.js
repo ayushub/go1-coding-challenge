@@ -1,4 +1,4 @@
-var {learnerAndCourses, quizResults, watchedCourses} = require('../index');
+var {learnerAndCourses, quizResults, watchedCourses, concurrentLearners} = require('../index');
 var assert = require('assert');
 
 describe('Go1', function() {
@@ -1262,6 +1262,49 @@ describe('Go1', function() {
                 Course_003: 'none',
                 Course_004: 'none'
               });
+        });
+    });
+    describe('concurrent learners', () => {
+        it('return 2', () => {
+            let a = [
+                ["User_001", 0, 1000],
+                ["User_002", 500, 2000]
+            ];
+            assert.equal(concurrentLearners(a), 2);
+        });
+        it('sess 2', () => {
+            let a = [
+                ["User_001", 0, 1000],
+                ["User_002", 500, 2000],
+                ["User_003", 2500, 3000],
+                ["User_004", 400, 1400]
+            ];
+            assert.equal(concurrentLearners(a), 3);
+        });
+        it('sess 3', () => {
+            let a = [
+                ["User_001", 0, 1000],
+                ["User_002", 500, 2000],
+                ["User_003", 2500, 3000],
+                ["User_004", 400, 1400],
+                ["User_001", 1100, 1800],
+                ["User_005", 1200, 1400],
+                ["User_006", 500, 2400],
+                ["User_003", 2100, 2300]
+                
+            ];
+            assert.equal(concurrentLearners(a), 4);
+        });
+        it('sess 4', () => {
+            let a = [
+                ["User_001", 0, 1000],
+                ["User_002", 500, 2000],
+                ["User_003", 2500, 3000],
+                ["User_001", 1100, 1800],
+                ["User_002", 600, 2400],
+                ["User_002", 700, 1800]
+            ];
+            assert.equal(concurrentLearners(a), 2);
         });
     })
 });

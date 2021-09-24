@@ -52,6 +52,7 @@ const watchedCourses = function(courses) {
 
     for (let i in courses){
         for(let c in courses[i]){
+            //cater for last course of the session
             let c2 = courses[i][parseInt(c) + 1] || 'none';
             if (c2) {
                 let combo = courses[i][c] + '<->' + c2;
@@ -86,10 +87,40 @@ console.log(courseList);
     return courseList;
 }
 
+const concurrentLearners = function(sessions){
+    let sesh = 0, start = 0, end = 0;
+    let longestSesh = new Set();
+    
+    
+    let concUsers = new Set();
+    for(let s = 0; s < sessions.length; s++){
+        start = sessions[s][1];
+        end = sessions[s][2];
+        concUsers.add(sessions[s][0]);
+        for(let u = s + 1; u < sessions.length; u++){
+            if(!concUsers.has(sessions[u][0]) && 
+            ((sessions[u][1] > start && sessions[u][1] < end) || 
+            ((sessions[u][1] > start && sessions[u][2] < end)) )){
+                    concUsers.add(sessions[u][0]);
+                }
+        }
+        if(concUsers.size > sesh) {
+            sesh = concUsers.size;
+            longestSesh = new Set(concUsers);
+        }
+
+        // console.log(concUsers)
+        concUsers.clear();
+    }
+    console.log(longestSesh)
+    return sesh;
+}
+
 module.exports = 
 {
     learnerAndCourses: learnerAndCourses,
     quizResults: quizResults,
-    watchedCourses: watchedCourses 
+    watchedCourses: watchedCourses,
+    concurrentLearners: concurrentLearners
 };
 
