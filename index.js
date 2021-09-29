@@ -25,6 +25,91 @@ const learnerAndCourses = function (dataset) {
     return [...singleLearnerCourseList];
 };
 
+const learnerAndCoursesWithL = function (dataset) {
+    //assuming valid JSON so no duplicate learners
+    
+    let singleLearnerCourseList = new Set(), dups = [];
+let singleLObj = {};
+    //traverse through the json obj
+    for (let learner in dataset){
+        //check if it has courses
+        if(dataset[learner].length > 0){
+            let courses = dataset[learner];
+            console.log(learner);
+            let newCourses = [];
+            for(let i in courses){
+                //if already added then its a repeat course
+                if(singleLearnerCourseList.has(courses[i])){
+                    dups.push(courses[i]);
+                    singleLearnerCourseList.delete(courses[i]);
+                } else if (!dups.includes(courses[i]) && 
+                           !newCourses.includes(courses[i])) {
+                    newCourses.push(courses[i]);
+                }
+            }
+            if(newCourses.length > 0) {
+                newCourses.forEach(c => singleLearnerCourseList.add(c));
+            }
+
+        }
+    }
+
+    for(let learner in dataset){
+        if(dataset[learner].length > 0 && singleLearnerCourseList.size > 0){
+            for(let course of singleLearnerCourseList){
+                if(dataset[learner].includes(course)){
+                    if(singleLObj[learner] === undefined)
+                        singleLObj[learner] = [];
+                    singleLObj[learner].push(course);
+                }
+
+            }
+        }
+    }
+    return singleLObj;
+};
+
+const doesExist = function(courses, course){
+    for(let c in courses){
+        if(course[c].course == course)
+            return true;
+    }
+    return false;
+}
+
+const learnerAndCoursesRetSoulmates = function (dataset){
+    let soulmates = {};
+    let courseList = [];
+
+    for(let l1 in dataset){
+        let lcs = dataset[l1];
+        for(let c1 in lcs){
+            let course = lcs[c1];
+            if(doesExist(courseList, course)){
+                courseList[course].learners.push(l1);
+                courseList[course].count++;
+            } else{
+                courseList[course] = {
+                    course: course,
+                    learner: [l1],
+                    count: 1
+                }
+            }
+        }
+    }
+    console.log(courseList);
+
+    // for(let l1 in dataset){
+    //     let soul1 = dataset[l1];
+    //     for(let l2 in dataset){
+    //         let soul2 = dataset[l2];
+    //         if(l2 !== l1 && !soulmates.includes(l1)){
+
+    //         }
+    //     }
+    // }
+};
+
 const quizResults = function (answers, responses) {
     let index = -1;
     var counter = answers.map(a => 0);
@@ -118,6 +203,8 @@ const concurrentLearners = function(sessions){
 
 module.exports = 
 {
+    learnerAndCoursesRetSoulmates: learnerAndCoursesRetSoulmates,
+    learnerAndCoursesWithL: learnerAndCoursesWithL,
     learnerAndCourses: learnerAndCourses,
     quizResults: quizResults,
     watchedCourses: watchedCourses,
